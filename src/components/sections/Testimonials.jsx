@@ -401,14 +401,7 @@ export function Testimonials() {
         </div>
 
         {/* Trust strip — wraps on mobile */}
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 opacity-50">
-          <span className="text-[11px] uppercase tracking-[0.2em] text-white/50" style={{ fontFamily: 'Inter, sans-serif' }}>Verified on</span>
-          <span className="text-[13px] font-medium text-[#4285F4]">Google</span>
-          <span className="text-white/20 hidden sm:inline">·</span>
-          <span className="text-[13px] font-medium text-[#00B964]">Trustpilot</span>
-          <span className="text-white/20 hidden sm:inline">·</span>
-          <span className="text-[13px] font-medium text-white/40">RealSelf</span>
-        </div>
+        
       </div>
 
       <style>{`

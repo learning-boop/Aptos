@@ -110,7 +110,7 @@ function AreaCard({ area, description, detail, duration, image, tag, delay }) {
 
           {/* Duration badge */}
           <span
-            className="absolute right-3 top-3 rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] backdrop-blur-sm"
+            className="absolute right-3 top-3 rounded-full px-2.5 py-1 text-[12px] font-semibold uppercase tracking-[0.14em] backdrop-blur-sm"
             style={{ background: 'rgba(192,160,98,0.92)', color: '#2a1e08' }}
           >
             {duration}
@@ -125,26 +125,26 @@ function AreaCard({ area, description, detail, duration, image, tag, delay }) {
         {/* ── Body ── */}
         <div className="flex flex-1 flex-col px-5 pb-6 pt-5">
 
-          {/* Description — primary text, clearly readable */}
+          {/* Description — primary text */}
           <p
-            className="leading-[1.75]"
+            className="leading-[1.8]"
             style={{
-              fontSize: '14px',
-              fontWeight: "500",
-              color: '#1F2937',        /* dark grey — high contrast on white */
+              fontSize: '16px',
+              fontWeight: '500',
+              color: '#111827',
               fontFamily: 'Inter, sans-serif',
             }}
           >
             {description}
           </p>
 
-          {/* Detail — secondary text, still readable */}
+          {/* Detail — secondary text */}
           <p
-            className="mt-3.5 pt-3 leading-[1.7]"
+            className="mt-4 pt-4 leading-[1.75]"
             style={{
-              fontSize: '12.5px',
-              fontWeight: "500",
-              color: '#4B5563',        /* medium grey — clearly visible */
+              fontSize: '14px',
+              fontWeight: '500',
+              color: '#374151',
               fontFamily: 'Inter, sans-serif',
               borderTop: '1px solid rgba(192,160,98,0.18)',
             }}
@@ -155,7 +155,7 @@ function AreaCard({ area, description, detail, duration, image, tag, delay }) {
           {/* ── Meta row ── */}
           <div className="mt-auto flex items-center justify-between pt-4">
             <span
-              className="rounded px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.14em]"
+              className="rounded px-2 py-1 text-[12px] font-semibold uppercase tracking-[0.14em]"
               style={{
                 border: '1px solid rgba(154,123,66,0.35)',
                 color: '#9A7B42',
@@ -165,7 +165,7 @@ function AreaCard({ area, description, detail, duration, image, tag, delay }) {
               {tag}
             </span>
             <ArrowRight
-              size={13}
+              size={14}
               className="transition-all duration-300 group-hover:translate-x-[3px]"
               style={{ color: 'rgba(192,160,98,0.6)' }}
             />
@@ -208,7 +208,7 @@ export function TreatmentAreas() {
           <p
             className="mb-4 uppercase"
             style={{
-              fontSize: '10px',
+              fontSize: '12px',
               fontWeight: '600',
               letterSpacing: '0.28em',
               color: 'var(--color-gold-deep)',
@@ -236,11 +236,11 @@ export function TreatmentAreas() {
           <p
             className="mx-auto max-w-xl leading-relaxed"
             style={{
-              fontSize: 'clamp(15px, 2.5vw, 16px)',
-              fontWeight: "500",
-              color: '#374151',        /* darker than muted-foreground for readability */
+              fontSize: 'clamp(16px, 2.5vw, 18px)',
+              fontWeight: '500',
+              color: '#1F2937',
               fontFamily: 'Inter, sans-serif',
-              lineHeight: '1.75',
+              lineHeight: '1.8',
             }}
           >
             Aptos threads can be precisely placed across six key facial and body zones — each

@@ -87,12 +87,12 @@ function StatStrip() {
       )}
     >
       {STATS.map(({ num, unit, label }) => (
-        <div key={label} className="flex-1 py-5 px-6 text-center">
-          <p className="font-serif text-3xl font-light text-[var(--color-gold)] leading-none mb-1">
+        <div key={label} className="flex-1 py-6 px-6 text-center">
+          <p className="font-serif text-3xl font-semibold text-[var(--color-gold)] leading-none mb-2">
             {num}
-            {unit && <span className="text-lg">{unit}</span>}
+            {unit && <span className="text-xl">{unit}</span>}
           </p>
-          <p className="text-[11px] tracking-luxe uppercase text-[var(--color-muted-foreground)] font-semibold">
+          <p className="text-[13px] tracking-luxe uppercase text-[#374151] font-semibold">
             {label}
           </p>
         </div>
@@ -138,16 +138,16 @@ function BenefitCard({ icon: Icon, index, title, body, detail, tag, accent, dela
         className="w-11 h-11 rounded-xl flex items-center justify-center mb-5"
         style={{ background: `color-mix(in srgb, ${accentVar} 10%, transparent)` }}
       >
-        <Icon size={19} style={{ color: accentVar }} />
+        <Icon size={20} style={{ color: accentVar }} />
       </div>
 
       {/* Title */}
-      <h3 className="font-serif text-xl text-[var(--color-foreground)] mb-2.5 leading-snug">
+      <h3 className="font-serif text-xl text-[var(--color-foreground)] mb-3 leading-snug font-semibold">
         {title}
       </h3>
 
-      {/* Body */}
-      <p className="text-sm font-medium text-[var(--color-muted-foreground)] leading-relaxed mb-4">
+      {/* Body — increased */}
+      <p style={{ fontSize:'16px', fontWeight:'500', color:'#111827', lineHeight:'1.8', marginBottom:'1rem', fontFamily:'Inter,sans-serif' }}>
         {body}
       </p>
 
@@ -157,15 +157,18 @@ function BenefitCard({ icon: Icon, index, title, body, detail, tag, accent, dela
         style={{ background: `color-mix(in srgb, ${accentVar} 15%, transparent)` }}
       />
 
-      {/* Clinical detail */}
-      <p className="text-[11px] leading-relaxed font-medium" style={{ color: `${accentVar}80` }}>
+      {/* Clinical detail — increased */}
+      <p style={{ fontSize:'14px', fontWeight:'500', lineHeight:'1.75', fontFamily:'Inter,sans-serif', color: `${accentVar}99` }}>
         {detail}
       </p>
 
-      {/* Tag */}
+      {/* Tag — increased */}
       <span
-        className="inline-block mt-4 text-[11px] tracking-luxe uppercase px-2.5 py-1 rounded"
+        className="inline-block mt-4 uppercase px-2.5 py-1 rounded"
         style={{
+          fontSize:'12px',
+          fontWeight:'600',
+          letterSpacing:'0.1em',
           color: accentVar,
           border: `0.5px solid color-mix(in srgb, ${accentVar} 28%, transparent)`,
         }}
@@ -212,7 +215,7 @@ export function Benefits() {
 
       <div className="relative max-w-7xl mx-auto">
 
-        {/* ── Header ── */}
+        {/* Header */}
         <div
           ref={ref}
           className={cn(
@@ -220,23 +223,23 @@ export function Benefits() {
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8',
           )}
         >
-          <p className="text-[11px] tracking-luxe uppercase text-[var(--color-gold-deep)] mb-4">
+          <p style={{ fontSize:'13px', fontWeight:'600', letterSpacing:'0.22em', textTransform:'uppercase', color:'var(--color-gold-deep)', marginBottom:'1rem', fontFamily:'Inter,sans-serif' }}>
             Why Choose Aptos
           </p>
           <GoldLine className="w-16 mx-auto mb-6 opacity-50" />
           <h2 className="font-serif text-4xl md:text-5xl text-[var(--color-foreground)] mb-4 leading-tight">
             Thread lifting, <em className="italic text-gradient-gold">refined</em>
           </h2>
-          <p className="text-sm font-medium text-[var(--color-muted-foreground)] max-w-xl mx-auto leading-relaxed">
+          <p style={{ fontSize:'17px', fontWeight:'500', color:'#1F2937', maxWidth:'36rem', margin:'0 auto', lineHeight:'1.8', fontFamily:'Inter,sans-serif' }}>
             The Aptos technique unites precision bioengineering with your body's own regenerative
             intelligence — delivering a lift that looks, moves, and ages as naturally as you do.
           </p>
         </div>
 
-        {/* ── Stat Strip ── */}
+        {/* Stat Strip */}
         <StatStrip />
 
-        {/* ── Grid ── */}
+        {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {BENEFITS.map(({ icon, index, title, body, detail, tag, accent }, i) => (
             <BenefitCard

@@ -33,14 +33,14 @@ export function Navbar() {
       <div className="mx-auto max-w-7xl px-6 flex items-center justify-between">
         {/* Logo — fixed at 36px height, premium compact wordmark */}
         <a href="/" className="flex items-center" aria-label="Aptos home">
-          <img
-            src="/logo.png"
-            alt="Dr Matla Clinic"
-            className={cn(
-              'w-auto object-contain transition-all duration-500',
-              scrolled ? 'h-14' : 'h-16',
-            )}
-          />
+         <img
+  src="/logo10.png"
+  alt="Aptos"
+  className={cn(
+    'w-auto object-contain transition-all duration-500',
+    scrolled ? 'h-18' : 'h-20'
+  )}
+/>
         </a>
 
         {/* Desktop nav */}
