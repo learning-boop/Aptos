@@ -11,7 +11,7 @@ const TREATMENTS = [
 
 const COMPANY = [
   { label: 'About Dr Matla', href: '#about'        },
-  { label: 'Before & After',  href: '#results'      },
+  // { label: 'Before & After',  href: '#results'      },
   { label: 'How It Works',    href: '#how-it-works' },
   { label: 'FAQ',             href: '#faq'           },
   { label: 'Testimonials',    href: '#reviews'       },
@@ -43,7 +43,7 @@ function LogoMark() {
       <img
         src="/logo.png"
         alt="Dr Matla Clinic"
-        className="h-10 w-auto object-contain"
+        className="h-18 w-auto object-contain"
       />
     </a>
   )
@@ -141,7 +141,7 @@ export function Footer() {
             <ul className="flex flex-col gap-4 mb-8">
               {[
                 { icon: MapPin, text: 'Newcastle upon Tyne, NE1', href: null },
-                { icon: Phone,  text: '0191 000 0000',            href: 'tel:+441910000000' },
+                { icon: Phone,  text: '0333 444 1399',            href: '0333 444 1399' },
                 { icon: Mail,   text: 'hello@drmatla.com',         href: 'mailto:hello@drmatla.com' },
               ].map(({ icon: Icon, text, href }) => (
                 <li key={text} className="flex items-start gap-3">
