@@ -132,7 +132,7 @@ export function WhyAptos() {
 
             <p
               className="max-w-xs"
-              style={{ fontSize:'15px', fontWeight:'400', color:'#4B5563', fontFamily:'Inter,sans-serif', lineHeight:'1.75' }}
+              style={{ fontSize:'15px', fontWeight:'500', color:'#374151', fontFamily:'Inter,sans-serif', lineHeight:'1.75' }}
             >
               See how Aptos thread lifting compares to other facial rejuvenation options.
             </p>
@@ -253,7 +253,7 @@ export function WhyAptos() {
             >
               {/* Feature label */}
               <div className="flex items-center px-4 py-0 md:px-6">
-                <span style={{ fontSize:'clamp(12px,1.8vw,14px)', fontWeight:'400', color:'#1F2937', fontFamily:'Inter,sans-serif', lineHeight:'1.5' }}>
+                <span style={{ fontSize:'clamp(12px,1.8vw,14px)', fontWeight:'500', color:'#1F2937', fontFamily:'Inter,sans-serif', lineHeight:'1.5' }}>
                   {feature}
                 </span>
               </div>
@@ -286,28 +286,30 @@ export function WhyAptos() {
             <p style={{ fontSize:'13px', fontWeight:'400', color:'rgba(255,255,255,0.78)', fontFamily:'Inter,sans-serif' }}>
               Ready to experience the Aptos difference?
             </p>
-            <button
-              type="button"
-              className="group inline-flex items-center gap-2 shrink-0 transition-all duration-300 hover:bg-transparent hover:text-[var(--color-gold)]"
-              style={{
-                padding:'11px 24px',
-                background:'var(--color-gold)',
-                color:'var(--color-navy)',
-                border:'1px solid var(--color-gold)',
-                borderRadius:'2px',
-                fontSize:'12px',
-                fontWeight:'600',
-                letterSpacing:'0.2em',
-                textTransform:'uppercase',
-                fontFamily:'Inter,sans-serif',
-                cursor:'pointer',
-              }}
-            >
-              Book Consultation
-              <svg width="12" height="12" viewBox="0 0 14 14" fill="none" className="transition-transform duration-300 group-hover:translate-x-1">
-                <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
+           <a href="https://portal.aestheticnursesoftware.com/book-online/1150"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="group inline-flex items-center gap-2 shrink-0 transition-all duration-300 hover:bg-transparent hover:text-[var(--color-gold)]"
+  style={{
+    padding:'11px 24px',
+    background:'var(--color-gold)',
+    color:'var(--color-navy)',
+    border:'1px solid var(--color-gold)',
+    borderRadius:'2px',
+    fontSize:'12px',
+    fontWeight:'600',
+    letterSpacing:'0.2em',
+    textTransform:'uppercase',
+    fontFamily:'Inter,sans-serif',
+    cursor:'pointer',
+    textDecoration:'none',
+  }}
+>
+  Reserve Your Consultation
+  <svg width="12" height="12" viewBox="0 0 14 14" fill="none" className="transition-transform duration-300 group-hover:translate-x-1">
+    <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+</a>
           </div>
         </div>
 

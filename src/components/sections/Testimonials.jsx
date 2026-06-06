@@ -1,4 +1,5 @@
-import { useState } from 'react'
+
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { cn } from '@/lib/utils'
 import { GoldLine } from '@/components/ui/GoldLine'
 import { useScrollReveal } from '@/hooks/useScrollReveal'
@@ -57,7 +58,6 @@ function Stars({ count }) {
   )
 }
 
-/* Platform badge with recognisable colour */
 function PlatformBadge({ platform }) {
   const isGoogle = platform === 'Google'
   return (
@@ -69,7 +69,6 @@ function PlatformBadge({ platform }) {
         color: isGoogle ? '#4285F4' : '#00B964',
       }}
     >
-      {/* Simplified platform icon */}
       {isGoogle ? (
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -88,24 +87,123 @@ function PlatformBadge({ platform }) {
   )
 }
 
+/* Desktop-only card — shown in 3-col peek grid */
+function TestimonialCard({ t, isActive, onClick }) {
+  return (
+    <div
+      onClick={onClick}
+      className={cn(
+        'relative rounded-2xl p-6 md:p-8 cursor-pointer select-none w-full',
+        'transition-all duration-500 ease-out',
+        isActive
+          ? 'opacity-100 scale-100'
+          : 'opacity-40 scale-[0.96] hover:opacity-60',
+      )}
+      style={{
+        background: isActive
+          ? 'linear-gradient(135deg, rgba(192,160,98,0.08) 0%, rgba(15,28,55,0.9) 100%)'
+          : 'rgba(15,28,55,0.5)',
+        border: isActive
+          ? '1px solid rgba(192,160,98,0.35)'
+          : '1px solid rgba(255,255,255,0.06)',
+        boxShadow: isActive
+          ? '0 0 0 1px rgba(192,160,98,0.1), 0 20px 60px rgba(0,0,0,0.4)'
+          : 'none',
+        backdropFilter: 'blur(12px)',
+      }}
+    >
+      {isActive && (
+        <Quote size={32} className="text-[var(--color-gold)]/15 absolute top-6 right-6" aria-hidden />
+      )}
+
+      <div className="flex items-center gap-3 mb-4">
+        <Stars count={t.rating} />
+        <PlatformBadge platform={t.platform} />
+      </div>
+
+      <blockquote
+        className={cn(
+          'font-serif leading-relaxed mb-6 italic transition-all duration-500',
+          isActive ? 'text-white text-lg md:text-xl' : 'text-white/70 text-base line-clamp-3',
+        )}
+      >
+        "{t.quote}"
+      </blockquote>
+
+      <div className="flex items-center gap-3">
+        <div
+          className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
+          style={{
+            background: 'linear-gradient(135deg, rgba(192,160,98,0.25), rgba(192,160,98,0.08))',
+            border: '1px solid rgba(192,160,98,0.35)',
+          }}
+        >
+          <span className="font-serif text-sm text-[var(--color-gold)]">{t.initials}</span>
+        </div>
+        <div>
+          <p className="text-white font-medium text-[13px]">{t.name}, {t.age}</p>
+          <p className="text-white/45 text-[11px] font-light">{t.area} · {t.weeks}</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export function Testimonials() {
   const [active, setActive] = useState(0)
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+  const [touchStart, setTouchStart] = useState(null)
   const { ref, isVisible } = useScrollReveal()
 
-  const prev = () => setActive(i => (i - 1 + TESTIMONIALS.length) % TESTIMONIALS.length)
-  const next = () => setActive(i => (i + 1) % TESTIMONIALS.length)
+  const count = TESTIMONIALS.length
+
+  const prev = useCallback(() => {
+    setActive(i => (i - 1 + count) % count)
+    setIsAutoPlaying(false)
+  }, [count])
+
+  const next = useCallback(() => {
+    setActive(i => (i + 1) % count)
+    setIsAutoPlaying(false)
+  }, [count])
+
+  // Auto-play
+  useEffect(() => {
+    if (!isAutoPlaying) return
+    const id = setInterval(() => setActive(i => (i + 1) % count), 5000)
+    return () => clearInterval(id)
+  }, [isAutoPlaying, count])
+
+  // Keyboard nav
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'ArrowLeft') prev()
+      if (e.key === 'ArrowRight') next()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [prev, next])
+
+  // Native touch swipe for mobile
+  const onTouchStart = (e) => setTouchStart(e.touches[0].clientX)
+  const onTouchEnd = (e) => {
+    if (touchStart === null) return
+    const delta = touchStart - e.changedTouches[0].clientX
+    if (Math.abs(delta) > 40) delta > 0 ? next() : prev()
+    setTouchStart(null)
+  }
 
   const t = TESTIMONIALS[active]
 
   return (
-    <section className="py-24 md:py-32 px-6 bg-[var(--color-navy)]" id="reviews">
-      <div className="max-w-5xl mx-auto">
+    <section className="py-20 md:py-32 bg-[var(--color-navy)] overflow-hidden" id="reviews">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
         {/* Header */}
         <div
           ref={ref}
           className={cn(
-            'text-center mb-14 transition-all duration-700',
+            'text-center mb-10 md:mb-14 transition-all duration-700',
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8',
           )}
         >
@@ -113,101 +211,216 @@ export function Testimonials() {
             Patient Stories
           </p>
           <GoldLine className="w-16 mx-auto mb-6 opacity-40" />
-          <h2 className="font-serif text-4xl md:text-5xl text-white mb-4">
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-white mb-4">
             Real <em className="italic text-gradient-gold">experiences</em>
           </h2>
-          {/* Aggregate rating bar */}
-          <div className="mt-6 flex items-center justify-center gap-3">
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
             <div className="flex items-center gap-0.5">
               {[1,2,3,4,5].map(i => (
-                <Star key={i} size={15} className="text-[var(--color-gold)] fill-[var(--color-gold)]" />
+                <Star key={i} size={14} className="text-[var(--color-gold)] fill-[var(--color-gold)]" />
               ))}
             </div>
-            <span className="text-white/80 text-[14px] font-light">4.9</span>
+            <span className="text-white/80 text-[13px] font-light">4.9</span>
             <span className="text-white/40 text-[12px]">· Based on 200+ verified reviews</span>
           </div>
         </div>
 
-        {/* Main testimonial card */}
-        <div className="glass-navy rounded-3xl p-8 md:p-12 relative">
-          <Quote size={40} className="text-[var(--color-gold)]/20 absolute top-8 left-8" aria-hidden />
+        {/* ── MOBILE carousel (< md) — full-width single sliding card ── */}
+        <div
+          className="md:hidden"
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+        >
+          {/* Slide window */}
+          <div className="overflow-hidden w-full">
+            <div
+              className="flex transition-transform duration-500 ease-out"
+              style={{ transform: `translateX(-${active * 100}%)` }}
+            >
+              {TESTIMONIALS.map((item, i) => (
+                <div key={i} className="w-full shrink-0 px-1">
+                  <div
+                    className="rounded-2xl p-6 w-full"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(192,160,98,0.08) 0%, rgba(15,28,55,0.9) 100%)',
+                      border: '1px solid rgba(192,160,98,0.35)',
+                      boxShadow: '0 0 0 1px rgba(192,160,98,0.1), 0 20px 60px rgba(0,0,0,0.4)',
+                    }}
+                  >
+                    {/* Stars + badge */}
+                    <div className="flex flex-wrap items-center gap-2 mb-4">
+                      <Stars count={item.rating} />
+                      <PlatformBadge platform={item.platform} />
+                    </div>
 
-          <div className="relative z-10">
-            <div className="flex items-center gap-3 mb-5">
-              <Stars count={t.rating} />
-              <PlatformBadge platform={t.platform} />
+                    {/* Quote */}
+                    <blockquote className="font-serif text-[17px] leading-relaxed text-white italic mb-6">
+                      "{item.quote}"
+                    </blockquote>
+
+                    {/* Author */}
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
+                        style={{
+                          background: 'linear-gradient(135deg, rgba(192,160,98,0.25), rgba(192,160,98,0.08))',
+                          border: '1px solid rgba(192,160,98,0.35)',
+                        }}
+                      >
+                        <span className="font-serif text-sm text-[var(--color-gold)]">{item.initials}</span>
+                      </div>
+                      <div>
+                        <p className="text-white font-medium text-[13px]">{item.name}, {item.age}</p>
+                        <p className="text-white/45 text-[11px] font-light">{item.area} · {item.weeks}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
+          </div>
 
-            <blockquote className="font-serif text-xl md:text-2xl text-white font-light leading-relaxed mb-8 italic">
-              "{t.quote}"
-            </blockquote>
-
-            <div className="flex items-center justify-between flex-wrap gap-4">
-              <div className="flex items-center gap-4">
-                {/* Avatar with initials — styled as real patient placeholder */}
-                <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center shrink-0"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(192,160,98,0.25), rgba(192,160,98,0.1))',
-                    border: '1px solid rgba(192,160,98,0.35)',
-                  }}
-                >
-                  <span className="font-serif text-base text-[var(--color-gold)]">{t.initials}</span>
-                </div>
-                <div>
-                  <p className="text-white font-medium text-[14px]">{t.name}, {t.age}</p>
-                  <p className="text-white/55 text-[12px] font-light">{t.area} · {t.weeks}</p>
-                </div>
-              </div>
-
-              {/* Nav */}
-              <div className="flex items-center gap-2">
+          {/* Mobile controls */}
+          <div className="mt-6 flex items-center justify-between px-1">
+            {/* Dots */}
+            <div className="flex items-center gap-2">
+              {TESTIMONIALS.map((_, i) => (
                 <button
-                  onClick={prev}
-                  className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center text-white/60 hover:border-[var(--color-gold)]/50 hover:text-[var(--color-gold)] transition-all duration-200"
-                  aria-label="Previous review"
-                >
-                  <ChevronLeft size={16} />
-                </button>
-                <button
-                  onClick={next}
-                  className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center text-white/60 hover:border-[var(--color-gold)]/50 hover:text-[var(--color-gold)] transition-all duration-200"
-                  aria-label="Next review"
-                >
-                  <ChevronRight size={16} />
-                </button>
-              </div>
+                  key={i}
+                  onClick={() => { setActive(i); setIsAutoPlaying(false) }}
+                  className={cn(
+                    'rounded-full transition-all duration-300',
+                    i === active
+                      ? 'w-6 h-1.5 bg-[var(--color-gold)]'
+                      : 'w-1.5 h-1.5 bg-white/25 hover:bg-white/50',
+                  )}
+                  aria-label={`Go to review ${i + 1}`}
+                />
+              ))}
+            </div>
+            {/* Arrows */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={prev}
+                className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center text-white/60 hover:border-[var(--color-gold)]/50 hover:text-[var(--color-gold)] transition-all duration-200"
+                aria-label="Previous review"
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <button
+                onClick={next}
+                className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center text-white/60 hover:border-[var(--color-gold)]/50 hover:text-[var(--color-gold)] transition-all duration-200"
+                aria-label="Next review"
+              >
+                <ChevronRight size={16} />
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Dots */}
-        <div className="flex items-center justify-center gap-2 mt-6">
-          {TESTIMONIALS.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setActive(i)}
-              className={cn(
-                'rounded-full transition-all duration-300',
-                i === active
-                  ? 'w-6 h-1.5 bg-[var(--color-gold)]'
-                  : 'w-1.5 h-1.5 bg-white/20 hover:bg-white/40',
-              )}
-              aria-label={`Go to review ${i + 1}`}
+        {/* ── DESKTOP 3-card peek layout (≥ md) ── */}
+        <div className="hidden md:block">
+          <div className="relative">
+            <div className="grid grid-cols-3 gap-4 items-start">
+              {[-1, 0, 1].map(offset => {
+                const idx = (active + offset + count) % count
+                return (
+                  <TestimonialCard
+                    key={idx}
+                    t={TESTIMONIALS[idx]}
+                    isActive={offset === 0}
+                    onClick={() => {
+                      if (offset !== 0) { offset > 0 ? next() : prev() }
+                    }}
+                  />
+                )
+              })}
+            </div>
+            {/* Gradient fade edges */}
+            <div
+              className="absolute inset-y-0 left-0 w-8 pointer-events-none z-10"
+              style={{ background: 'linear-gradient(90deg, var(--color-navy), transparent)' }}
             />
-          ))}
+            <div
+              className="absolute inset-y-0 right-0 w-8 pointer-events-none z-10"
+              style={{ background: 'linear-gradient(270deg, var(--color-navy), transparent)' }}
+            />
+          </div>
+
+          {/* Desktop controls */}
+          <div className="mt-8 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              {TESTIMONIALS.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => { setActive(i); setIsAutoPlaying(false) }}
+                  className={cn(
+                    'rounded-full transition-all duration-300',
+                    i === active
+                      ? 'w-6 h-1.5 bg-[var(--color-gold)]'
+                      : 'w-1.5 h-1.5 bg-white/20 hover:bg-white/40',
+                  )}
+                  aria-label={`Go to review ${i + 1}`}
+                />
+              ))}
+            </div>
+            <div className="flex items-center gap-3">
+              {isAutoPlaying && (
+                <div className="relative w-7 h-7">
+                  <svg className="w-7 h-7 -rotate-90" viewBox="0 0 28 28">
+                    <circle cx="14" cy="14" r="11" fill="none" stroke="rgba(192,160,98,0.15)" strokeWidth="2"/>
+                    <circle
+                      cx="14" cy="14" r="11"
+                      fill="none"
+                      stroke="rgba(192,160,98,0.7)"
+                      strokeWidth="2"
+                      strokeDasharray="69.1"
+                      strokeDashoffset="0"
+                      strokeLinecap="round"
+                      style={{ animation: 'carousel-progress 5s linear infinite' }}
+                    />
+                  </svg>
+                </div>
+              )}
+              <button
+                onClick={prev}
+                className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center text-white/60 hover:border-[var(--color-gold)]/50 hover:text-[var(--color-gold)] transition-all duration-200"
+                aria-label="Previous review"
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <button
+                onClick={next}
+                className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center text-white/60 hover:border-[var(--color-gold)]/50 hover:text-[var(--color-gold)] transition-all duration-200"
+                aria-label="Next review"
+              >
+                <ChevronRight size={16} />
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* Trust logos row */}
-        <div className="mt-10 flex items-center justify-center gap-8 opacity-50">
+        {/* Trust strip — wraps on mobile */}
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 opacity-50">
           <span className="text-[11px] uppercase tracking-[0.2em] text-white/50" style={{ fontFamily: 'Inter, sans-serif' }}>Verified on</span>
           <span className="text-[13px] font-medium text-[#4285F4]">Google</span>
-          <span className="text-white/20">·</span>
+          <span className="text-white/20 hidden sm:inline">·</span>
           <span className="text-[13px] font-medium text-[#00B964]">Trustpilot</span>
-          <span className="text-white/20">·</span>
+          <span className="text-white/20 hidden sm:inline">·</span>
           <span className="text-[13px] font-medium text-white/40">RealSelf</span>
         </div>
       </div>
+
+      <style>{`
+        @keyframes carousel-progress {
+          from { stroke-dashoffset: 69.1; }
+          to   { stroke-dashoffset: 0; }
+        }
+      `}</style>
     </section>
   )
 }
+
+
+
+

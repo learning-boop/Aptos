@@ -24,7 +24,7 @@ export default function App() {
       <WhyAptos />
       <Testimonials />
       <FAQ />
-      <ConsultationCTA />
+      {/* <ConsultationCTA /> */}
       <Footer />
     </main>
   )

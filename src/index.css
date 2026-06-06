@@ -63,7 +63,7 @@
   p {
     color:       var(--color-muted-foreground);
     font-size:   clamp(0.9375rem, 2.5vw, 1rem);
-    font-weight: 400;
+    font-weight: 500;
     line-height: 1.75;
   }
 
@@ -98,14 +98,15 @@
 
     p {
       font-size:   0.9375rem;
-      font-weight: 400;
+      font-weight: 500;
       line-height: 1.8;
       color:       var(--color-muted-foreground);
     }
 
     .section-light p,
     .section-cream p {
-      color: #374151;
+      color: #1F2937;
+      font-weight: 500;
     }
 
     .section-dark p {
@@ -120,7 +121,7 @@
       letter-spacing: 0.15em;
     }
 
-    .font-light { font-weight: 400 !important; }
+    /* keep font-light at 400 only on dark sections; light sections need heavier weight */
 
     .card { border-color: #D1C9BC; }
   }

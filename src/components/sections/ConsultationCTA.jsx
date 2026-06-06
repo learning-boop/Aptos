@@ -3,6 +3,8 @@ import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/Button'
 import { useScrollReveal } from '@/hooks/useScrollReveal'
 
+const BOOKING_URL = 'https://portal.aestheticnursesoftware.com/book-online/1150'
+
 export function ConsultationCTA() {
   const { ref, isVisible } = useScrollReveal()
 
@@ -38,14 +40,21 @@ export function ConsultationCTA() {
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
-          <Button variant="primary" size="lg" className="group w-full sm:w-auto">
-            <Calendar size={16} />
-            Book Free Consultation
-            <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-1" />
-          </Button>
+          <a
+            href={BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full sm:w-auto"
+          >
+            <Button variant="primary" size="lg" className="group w-full">
+              <Calendar size={16} />
+              Book Free Consultation
+              <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-1" />
+            </Button>
+          </a>
           <Button variant="glass-dark" size="lg" className="w-full sm:w-auto">
             <Phone size={16} />
-            Call 0123 456 7890
+            Call 0191 000 0000
           </Button>
         </div>
 
@@ -53,8 +62,8 @@ export function ConsultationCTA() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { icon: Calendar, label: 'Free Consultation', sub: 'No obligation assessment' },
-            { icon: MapPin,   label: '12 Harley Street', sub: 'London, W1G 9PQ' },
-            { icon: Phone,    label: 'Mon – Sat',         sub: '9:00 – 18:30' },
+            { icon: MapPin,   label: 'Newcastle upon Tyne', sub: 'NE1' },
+            { icon: Phone,    label: 'Mon – Sat',           sub: '9:00 – 18:30' },
           ].map(({ icon: Icon, label, sub }) => (
             <div key={label} className="glass-navy rounded-xl p-4 flex items-center gap-3">
               <div className="w-9 h-9 rounded-full bg-[var(--color-gold)]/15 flex items-center justify-center shrink-0">

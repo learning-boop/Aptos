@@ -8,8 +8,8 @@ const CREDENTIALS = [
 ]
 
 const HIGHLIGHTS = [
-  { value: '5,000+', label: 'Treatments'     },
-  { value: '25 Yrs', label: 'Experience'     },
+  { value: '2800+', label: 'Treatments'     },
+  { value: '9+ Yrs', label: 'Experience'     },
   { value: '4.9 ★',  label: 'Patient Rating' },
 ]
 
@@ -87,22 +87,12 @@ export function AboutSection() {
                     border: '1px solid rgba(192,160,98,0.2)',
                   }}
                 >
-                  <div
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
-                    style={{ border: '1px solid rgba(192,160,98,0.4)', background: 'rgba(192,160,98,0.1)' }}
-                  >
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                      <circle cx="8" cy="8" r="7" stroke="#C0A062" strokeWidth="0.75" opacity="0.8"/>
-                      <path d="M8 3 L12 8 L8 13 L4 8 Z" stroke="#C0A062" strokeWidth="0.75" fill="none" opacity="0.9"/>
-                      <circle cx="8" cy="8" r="1.5" fill="#C0A062"/>
-                    </svg>
-                  </div>
                   <div>
                     <p className="text-[12px] font-medium text-white leading-tight" style={{ fontFamily: 'Inter, sans-serif' }}>
                       Dr Matla
                     </p>
                     <p className="text-[11px] text-white/60 mt-0.5 tracking-wide" style={{ fontFamily: 'Inter, sans-serif' }}>
-                      Aptos Certified · Dr Matla Clinic
+                      Aptos Certified.
                     </p>
                   </div>
                   <div
@@ -110,7 +100,7 @@ export function AboutSection() {
                     style={{ borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '12px' }}
                   >
                     <p className="text-[16px] font-light leading-none text-[var(--color-gold)]" style={{ fontFamily: "'Playfair Display', serif" }}>
-                      25
+                      9+
                     </p>
                     <p className="text-[8px] uppercase tracking-[0.18em] text-white/40 mt-0.5" style={{ fontFamily: 'Inter, sans-serif' }}>
                       Years
@@ -197,26 +187,7 @@ export function AboutSection() {
             </ul>
 
             {/* CTA — button text 12px */}
-            <div className="about-reveal" style={{ animationDelay: '0.75s' }}>
-              <button
-                type="button"
-                className="group inline-flex items-center gap-3 border border-[var(--color-gold)] bg-[var(--color-gold)] px-9 py-[15px] text-[12px] font-medium uppercase tracking-[0.18em] text-[var(--color-navy)] transition-all duration-300 hover:bg-transparent hover:text-[var(--color-gold)] shadow-[0_4px_20px_rgba(192,160,98,0.25)]"
-                style={{ fontFamily: 'Inter, sans-serif', borderRadius: '2px' }}
-              >
-                Book a Consultation
-                <svg
-                  width="12" height="12" viewBox="0 0 14 14" fill="none"
-                  className="transition-transform duration-300 group-hover:translate-x-1"
-                  aria-hidden="true"
-                >
-                  <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
-              <p className="mt-3 text-[11px] text-white/40" style={{ fontFamily: 'Inter, sans-serif' }}>
-                ● Limited slots available — next opening: this week
-              </p>
-            </div>
-          </div>
+                     </div>
         </div>
 
         <div

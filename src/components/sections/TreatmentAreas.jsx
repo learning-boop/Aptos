@@ -130,7 +130,7 @@ function AreaCard({ area, description, detail, duration, image, tag, delay }) {
             className="leading-[1.75]"
             style={{
               fontSize: '14px',
-              fontWeight: '400',
+              fontWeight: "500",
               color: '#1F2937',        /* dark grey — high contrast on white */
               fontFamily: 'Inter, sans-serif',
             }}
@@ -143,7 +143,7 @@ function AreaCard({ area, description, detail, duration, image, tag, delay }) {
             className="mt-3.5 pt-3 leading-[1.7]"
             style={{
               fontSize: '12.5px',
-              fontWeight: '400',
+              fontWeight: "500",
               color: '#4B5563',        /* medium grey — clearly visible */
               fontFamily: 'Inter, sans-serif',
               borderTop: '1px solid rgba(192,160,98,0.18)',
@@ -237,7 +237,7 @@ export function TreatmentAreas() {
             className="mx-auto max-w-xl leading-relaxed"
             style={{
               fontSize: 'clamp(15px, 2.5vw, 16px)',
-              fontWeight: '400',
+              fontWeight: "500",
               color: '#374151',        /* darker than muted-foreground for readability */
               fontFamily: 'Inter, sans-serif',
               lineHeight: '1.75',

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/Button'
 
 const NAV_LINKS = [
   { label: 'Treatments',   href: '#treatments'  },
-  { label: 'Results',      href: '#results'      },
+
   { label: 'How It Works', href: '#how-it-works' },
   { label: 'About',        href: '#about'        },
   { label: 'FAQ',          href: '#faq'          },
@@ -58,9 +58,15 @@ export function Navbar() {
 
         {/* CTA — no phone number cluttering the nav */}
         <div className="hidden md:flex items-center gap-4">
-          <Button variant="primary" size="sm">
-          Reserve Your Consultation
-          </Button>
+          <a
+            href="https://portal.aestheticnursesoftware.com/book-online/1150"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button variant="primary" size="sm">
+              Reserve Your Consultation
+            </Button>
+          </a>
         </div>
 
         {/* Mobile burger */}
@@ -88,11 +94,18 @@ export function Navbar() {
             </a>
           ))}
           <a href="tel:+441234567890" className="flex items-center gap-2 text-sm text-white/50">
-            <Phone size={14} /> 0123 456 7890
+            <Phone size={14} /> 0333 444 1399
           </a>
-          <Button variant="primary" size="md" className="mt-2 w-full">
-            Book Consultation
-          </Button>
+          <a
+            href="https://portal.aestheticnursesoftware.com/book-online/1150"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 w-full"
+          >
+            <Button variant="primary" size="md" className="w-full">
+              Reserve Consultation
+            </Button>
+          </a>
         </div>
       )}
     </header>

@@ -92,7 +92,7 @@ function StatStrip() {
             {num}
             {unit && <span className="text-lg">{unit}</span>}
           </p>
-          <p className="text-[11px] tracking-luxe uppercase text-[var(--color-muted-foreground)]">
+          <p className="text-[11px] tracking-luxe uppercase text-[var(--color-muted-foreground)] font-semibold">
             {label}
           </p>
         </div>
@@ -147,7 +147,7 @@ function BenefitCard({ icon: Icon, index, title, body, detail, tag, accent, dela
       </h3>
 
       {/* Body */}
-      <p className="text-sm font-light text-[var(--color-muted-foreground)] leading-relaxed mb-4">
+      <p className="text-sm font-medium text-[var(--color-muted-foreground)] leading-relaxed mb-4">
         {body}
       </p>
 
@@ -158,7 +158,7 @@ function BenefitCard({ icon: Icon, index, title, body, detail, tag, accent, dela
       />
 
       {/* Clinical detail */}
-      <p className="text-[11px] leading-relaxed" style={{ color: `${accentVar}80` }}>
+      <p className="text-[11px] leading-relaxed font-medium" style={{ color: `${accentVar}80` }}>
         {detail}
       </p>
 
@@ -227,7 +227,7 @@ export function Benefits() {
           <h2 className="font-serif text-4xl md:text-5xl text-[var(--color-foreground)] mb-4 leading-tight">
             Thread lifting, <em className="italic text-gradient-gold">refined</em>
           </h2>
-          <p className="text-sm font-light text-[var(--color-muted-foreground)] max-w-xl mx-auto leading-relaxed">
+          <p className="text-sm font-medium text-[var(--color-muted-foreground)] max-w-xl mx-auto leading-relaxed">
             The Aptos technique unites precision bioengineering with your body's own regenerative
             intelligence — delivering a lift that looks, moves, and ages as naturally as you do.
           </p>

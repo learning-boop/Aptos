@@ -216,8 +216,10 @@ export function HeroSection() {
               className="mb-16 flex flex-wrap items-center gap-4"
               style={{ animation: 'hero-fade-up 0.7s ease 0.6s both' }}
             >
-              <button
-                type="button"
+              <a
+                href="https://portal.aestheticnursesoftware.com/book-online/1150"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group inline-flex items-center gap-3 border border-[var(--color-gold)] bg-[var(--color-gold)] px-9 py-[15px] text-[12px] font-medium uppercase tracking-[0.18em] text-[var(--color-navy)] transition-all duration-300 hover:bg-transparent hover:text-[var(--color-gold)] shadow-[0_4px_20px_rgba(192,160,98,0.3)]"
                 style={{ fontFamily: 'Inter, sans-serif', borderRadius: '2px' }}
               >
@@ -226,7 +228,7 @@ export function HeroSection() {
                   size={13}
                   className="transition-transform duration-300 group-hover:translate-x-1"
                 />
-              </button>
+              </a>
 
               <button
                 type="button"
