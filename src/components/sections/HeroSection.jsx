@@ -67,7 +67,7 @@ function VideoPanel({ videoRef, muted, onToggleSound }) {
           <video
             ref={videoRef}
             className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-[1.02]"
-            src="/hero-video.mp4"
+            src="/hero-video2.mp4"
             poster="/images/hero-model.jpg"
             autoPlay
             muted
@@ -239,13 +239,7 @@ export function HeroSection() {
               </button>
             </div>
 
-            {/* Availability nudge beneath CTAs */}
-            <p
-              className="mb-10 text-[11px] text-white/40 tracking-wide"
-              style={{ fontFamily: 'Inter, sans-serif', animation: 'hero-fade-up 0.7s ease 0.7s both' }}
-            >
-              ● Limited consultation slots available this month
-            </p>
+           
 
             <Stats />
           </div>
