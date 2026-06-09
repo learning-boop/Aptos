@@ -504,7 +504,7 @@ export function TreatmentAreas() {
               e.currentTarget.style.color = '#fff'
             }}
           >
-            Book Your Consultation
+            Reserve Your Consultation
           </a>
         </div>
 

@@ -9,6 +9,7 @@ import { WhyAptos }         from '@/components/sections/WhyAptos'
 import { Testimonials }     from '@/components/sections/Testimonials'
 import { FAQ }              from '@/components/sections/FAQ'
 import { ConsultationCTA }  from '@/components/sections/ConsultationCTA'
+import { ContactForm }      from '@/components/sections/ContactForm'
 import { Footer }           from '@/Footer'
 
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
       <Testimonials />
       <FAQ />
       {/* <ConsultationCTA /> */}
+      <ContactForm />
       <Footer />
     </main>
   )
