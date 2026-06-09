@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { ArrowRight, VolumeX, Volume2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -64,6 +64,15 @@ function VideoPanel({ videoRef, muted, onToggleSound }) {
         }}
       >
         <div className="relative overflow-hidden rounded-[calc(2rem-1px)] bg-[var(--color-slate-deep,#1E293B)] aspect-[4/5]">
+
+          {/*
+            CRITICAL for iOS Safari autoplay:
+            - muted, autoPlay, playsInline must ALL be present as JSX props
+            - The ref is used in useEffect to call .play() imperatively
+              as a fallback after any user gesture on the page
+            - x-webkit-airplay="deny" stops AirPlay from interrupting muted autoplay
+            - data-webkit-playsinline is the legacy iOS 8/9 attribute
+          */}
           <video
             ref={videoRef}
             className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-[1.02]"
@@ -75,9 +84,14 @@ function VideoPanel({ videoRef, muted, onToggleSound }) {
             playsInline
             preload="auto"
             aria-label="Aptos Thread Lift treatment showcase"
+            // Legacy iOS attributes (must be lowercase in HTML but JSX handles them)
+            x-webkit-airplay="deny"
+            data-webkit-playsinline="true"
           />
+
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[var(--color-navy)]/55 via-transparent to-transparent" />
           <div className="pointer-events-none absolute inset-0 rounded-[calc(2rem-1px)] ring-1 ring-inset ring-white/8" />
+
           <button
             type="button"
             onClick={onToggleSound}
@@ -88,6 +102,7 @@ function VideoPanel({ videoRef, muted, onToggleSound }) {
           </button>
         </div>
       </div>
+
       {INDICATORS.map((ind, i) => (
         <TreatmentIndicator key={ind.id} {...ind} delay={`${1.4 + i * 0.15}s`} />
       ))}
@@ -130,6 +145,56 @@ function Stats() {
 export function HeroSection() {
   const videoRef = useRef(null)
   const [muted, setMuted] = useState(true)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    // Attempt 1: play immediately on mount (works on Android + desktop)
+    const attemptPlay = () => {
+      video.muted = true          // ensure muted flag is set on the element
+      video.play().catch(() => {})
+    }
+
+    attemptPlay()
+
+    // Attempt 2: retry on first user interaction anywhere on the page.
+    // iOS Safari sometimes requires a gesture before even muted autoplay works.
+    const handleFirstInteraction = () => {
+      if (video.paused) {
+        video.muted = true
+        video.play().catch(() => {})
+      }
+      // Clean up — we only need this once
+      document.removeEventListener('touchstart', handleFirstInteraction)
+      document.removeEventListener('pointerdown', handleFirstInteraction)
+      document.removeEventListener('scroll', handleFirstInteraction)
+    }
+
+    document.addEventListener('touchstart',  handleFirstInteraction, { passive: true, once: true })
+    document.addEventListener('pointerdown', handleFirstInteraction, { passive: true, once: true })
+    document.addEventListener('scroll',      handleFirstInteraction, { passive: true, once: true })
+
+    // Attempt 3: Intersection Observer — play when video enters the viewport.
+    // Handles the case where the browser pauses offscreen videos.
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && video.paused) {
+          video.muted = true
+          video.play().catch(() => {})
+        }
+      },
+      { threshold: 0.25 }
+    )
+    observer.observe(video)
+
+    return () => {
+      document.removeEventListener('touchstart',  handleFirstInteraction)
+      document.removeEventListener('pointerdown', handleFirstInteraction)
+      document.removeEventListener('scroll',      handleFirstInteraction)
+      observer.disconnect()
+    }
+  }, [])
 
   const handleToggleSound = () => {
     const v = videoRef.current
@@ -177,7 +242,6 @@ export function HeroSection() {
           {/* LEFT: copy */}
           <div className="flex flex-col justify-center">
 
-            {/* Eyebrow label — raised to 11px */}
             <p
               className="mb-8 text-[11px] uppercase tracking-[0.28em] text-[var(--color-gold)]/70"
               style={{ fontFamily: 'Inter, sans-serif', animation: 'hero-fade-up 0.5s ease 0.1s both' }}
@@ -185,14 +249,12 @@ export function HeroSection() {
               Aptos Thread Lift
             </p>
 
-            {/* Gold rule */}
             <div
               className="mb-8 h-px w-12 bg-[var(--color-gold)]/35"
               style={{ animation: 'hero-line-grow 0.8s ease 0.2s both' }}
               aria-hidden="true"
             />
 
-            {/* Heading */}
             <h1
               className="mb-7 text-[3rem] font-light leading-[1.06] tracking-[-0.01em] text-white sm:text-[3.6rem] md:text-[4.2rem] lg:text-[4.6rem]"
               style={{ fontFamily: "'Playfair Display', serif", animation: 'hero-fade-up 0.7s ease 0.3s both' }}
@@ -203,7 +265,6 @@ export function HeroSection() {
               Rejuvenate.
             </h1>
 
-            {/* Subheading — raised from white/40 to white/70 */}
             <p
               className="mb-14 max-w-[26rem] text-[0.9375rem] font-light leading-[1.8] text-white/70"
               style={{ fontFamily: 'Inter, sans-serif', animation: 'hero-fade-up 0.7s ease 0.45s both' }}
@@ -211,7 +272,6 @@ export function HeroSection() {
               Advanced non-surgical facial lifting with<br />Aptos Excellence technology.
             </p>
 
-            {/* CTAs — button text raised to 12px, padding increased */}
             <div
               className="mb-16 flex flex-wrap items-center gap-4"
               style={{ animation: 'hero-fade-up 0.7s ease 0.6s both' }}
@@ -238,8 +298,6 @@ export function HeroSection() {
                 View Results
               </button>
             </div>
-
-           
 
             <Stats />
           </div>
