@@ -119,15 +119,18 @@ function AreaCard({ area, description, detail, duration, image, tag, isActive, o
         )}
       </div>
 
-      {/* ── Vignette ── */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          pointerEvents: 'none',
-          background: 'linear-gradient(to top, rgba(8,12,20,0.92) 30%, rgba(8,12,20,0.25) 65%, transparent 100%)',
-        }}
-      />
+    
+      {/* Vignette — only bottom third, fades out when active */}
+<div
+  style={{
+    position: 'absolute',
+    inset: 0,
+    pointerEvents: 'none',
+    background: 'linear-gradient(to top, rgba(8,12,20,0.82) 0%, rgba(8,12,20,0.45) 25%, rgba(8,12,20,0.0) 55%)',
+    opacity: isActive ? 0 : 1,
+    transition: 'opacity 0.4s',
+  }}
+/>
 
       {/* ── Dark overlay when active ── */}
       <div
