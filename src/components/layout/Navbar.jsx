@@ -34,7 +34,7 @@ export function Navbar() {
         {/* Logo — fixed at 36px height, premium compact wordmark */}
         <a href="/" className="flex items-center" aria-label="Aptos home">
          <img
-  src="/logo10.png"
+  src="/logo10.webp"
   alt="Aptos"
   className={cn(
     'w-auto object-contain transition-all duration-500',

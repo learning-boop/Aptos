@@ -1,4 +1,3 @@
-import { Sparkles, ShieldCheck, Timer, TrendingUp, Zap, Heart } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { GoldLine } from '@/components/ui/GoldLine'
 import { useScrollReveal } from '@/hooks/useScrollReveal'
@@ -12,8 +11,6 @@ const STATS = [
 
 const BENEFITS = [
   {
-    icon: Zap,
-    index: '01',
     title: 'Instant Visible Lift',
     body: 'Results appear immediately on the treatment table — no waiting weeks for your investment to reveal itself. Walk in, walk out transformed.',
     detail:
@@ -22,8 +19,6 @@ const BENEFITS = [
     accent: 'gold',
   },
   {
-    icon: ShieldCheck,
-    index: '02',
     title: 'FDA-Cleared Technology',
     body: 'Aptos threads carry CE marking and FDA clearance — the highest international benchmarks for safety and clinical efficacy in medical aesthetics.',
     detail:
@@ -32,8 +27,6 @@ const BENEFITS = [
     accent: 'ice',
   },
   {
-    icon: Timer,
-    index: '03',
     title: 'Zero Downtime',
     body: 'Return to your calendar the same day. No general anaesthetic, no compression garments, no weeks of bruising. Lunch-hour luxury that fits your life.',
     detail:
@@ -42,8 +35,6 @@ const BENEFITS = [
     accent: 'gold',
   },
   {
-    icon: TrendingUp,
-    index: '04',
     title: 'Results That Improve Over Time',
     body: 'Unlike fillers that simply add volume, Aptos threads trigger a cascade of natural collagen synthesis — meaning your result looks better at 6 months than at 6 days.',
     detail:
@@ -52,8 +43,6 @@ const BENEFITS = [
     accent: 'ice',
   },
   {
-    icon: Heart,
-    index: '05',
     title: 'Unmistakably Natural',
     body: 'Precision thread placement follows your facial anatomy exactly — lifting what has descended, never adding what was never there. Refined. Recognisable. You.',
     detail:
@@ -62,8 +51,6 @@ const BENEFITS = [
     accent: 'gold',
   },
   {
-    icon: Sparkles,
-    index: '06',
     title: 'Collagen Regeneration',
     body: "The patented Aptos bidirectional barb design anchors tissue while creating a sustained regenerative signal — your own biology doing the work of renewal.",
     detail:
@@ -80,19 +67,31 @@ function StatStrip() {
     <div
       ref={ref}
       className={cn(
-        'flex mb-14 rounded-2xl overflow-hidden',
-        'border border-[var(--color-border)] divide-x divide-[var(--color-border)]',
+        'grid grid-cols-2 sm:grid-cols-4 mb-14 rounded-2xl overflow-hidden',
+        'border border-[var(--color-border)]',
         'transition-all duration-700',
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6',
       )}
     >
-      {STATS.map(({ num, unit, label }) => (
-        <div key={label} className="flex-1 py-6 px-6 text-center">
+      {STATS.map(({ num, unit, label }, i) => (
+        <div
+          key={label}
+          className={cn(
+            'py-6 px-4 text-center',
+            /* right border on all except last in each row */
+            'border-[var(--color-border)]',
+            /* col borders */
+            i % 2 !== 1 && 'border-r',       /* mobile: right border on col 0 */
+            'sm:[&:not(:last-child)]:border-r', /* desktop: all except last */
+            /* row border: bottom on first two items (mobile top row) */
+            i < 2 && 'border-b sm:border-b-0',
+          )}
+        >
           <p className="font-serif text-3xl font-semibold text-[var(--color-gold)] leading-none mb-2">
             {num}
             {unit && <span className="text-xl">{unit}</span>}
           </p>
-          <p className="text-[13px] tracking-luxe uppercase text-[#374151] font-semibold">
+          <p className="text-[11px] sm:text-[13px] tracking-luxe uppercase text-[#374151] font-semibold">
             {label}
           </p>
         </div>
@@ -102,7 +101,7 @@ function StatStrip() {
 }
 
 /* ─── Benefit Card ───────────────────────────────────────────── */
-function BenefitCard({ icon: Icon, index, title, body, detail, tag, accent, delay }) {
+function BenefitCard({ title, body, detail, tag, accent, delay }) {
   const { ref, isVisible } = useScrollReveal()
   const isGold = accent === 'gold'
   const accentVar = isGold ? 'var(--color-gold)' : 'var(--color-ice)'
@@ -119,50 +118,28 @@ function BenefitCard({ icon: Icon, index, title, body, detail, tag, accent, dela
       )}
       style={{ transitionDelay: `${delay}ms` }}
     >
-      {/* Top shimmer line */}
       <div
         className="absolute top-0 inset-x-4 h-px"
         style={{ background: `linear-gradient(90deg, transparent, ${accentVar}33, transparent)` }}
       />
 
-      {/* Ghost index number */}
-      <span
-        className="absolute top-4 right-5 font-serif text-5xl font-light leading-none select-none pointer-events-none"
-        style={{ color: `${accentVar}18` }}
-      >
-        {index}
-      </span>
-
-      {/* Icon */}
-      <div
-        className="w-11 h-11 rounded-xl flex items-center justify-center mb-5"
-        style={{ background: `color-mix(in srgb, ${accentVar} 10%, transparent)` }}
-      >
-        <Icon size={20} style={{ color: accentVar }} />
-      </div>
-
-      {/* Title */}
       <h3 className="font-serif text-xl text-[var(--color-foreground)] mb-3 leading-snug font-semibold">
         {title}
       </h3>
 
-      {/* Body — increased */}
       <p style={{ fontSize:'16px', fontWeight:'500', color:'#111827', lineHeight:'1.8', marginBottom:'1rem', fontFamily:'Inter,sans-serif' }}>
         {body}
       </p>
 
-      {/* Divider */}
       <div
         className="h-px mb-4"
         style={{ background: `color-mix(in srgb, ${accentVar} 15%, transparent)` }}
       />
 
-      {/* Clinical detail — increased */}
       <p style={{ fontSize:'14px', fontWeight:'500', lineHeight:'1.75', fontFamily:'Inter,sans-serif', color: `${accentVar}99` }}>
         {detail}
       </p>
 
-      {/* Tag — increased */}
       <span
         className="inline-block mt-4 uppercase px-2.5 py-1 rounded"
         style={{
@@ -176,7 +153,6 @@ function BenefitCard({ icon: Icon, index, title, body, detail, tag, accent, dela
         {tag}
       </span>
 
-      {/* Bottom glow line on hover */}
       <div
         className="absolute bottom-0 inset-x-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-400"
         style={{ background: `linear-gradient(90deg, transparent, ${accentVar}80, transparent)` }}
@@ -194,7 +170,6 @@ export function Benefits() {
       id="benefits"
       className="relative py-24 md:py-32 px-6 bg-[var(--color-background)] overflow-hidden"
     >
-      {/* Subtle grid overlay */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
@@ -204,7 +179,6 @@ export function Benefits() {
         }}
       />
 
-      {/* Soft radial glow at top */}
       <div
         className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[700px] h-[360px]"
         style={{
@@ -215,7 +189,6 @@ export function Benefits() {
 
       <div className="relative max-w-7xl mx-auto">
 
-        {/* Header */}
         <div
           ref={ref}
           className={cn(
@@ -236,16 +209,12 @@ export function Benefits() {
           </p>
         </div>
 
-        {/* Stat Strip */}
         <StatStrip />
 
-        {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {BENEFITS.map(({ icon, index, title, body, detail, tag, accent }, i) => (
+          {BENEFITS.map(({ title, body, detail, tag, accent }, i) => (
             <BenefitCard
               key={title}
-              icon={icon}
-              index={index}
               title={title}
               body={body}
               detail={detail}

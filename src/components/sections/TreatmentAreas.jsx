@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import { useScrollReveal } from '@/hooks/useScrollReveal'
-import { Clock, X } from 'lucide-react'
+import { Clock, X, ChevronRight } from 'lucide-react'
 
 const AREAS = [
   {
     area: 'Brow & Temple',
     duration: '30 min',
-    image: '/treat-1.png',
+    image: '/treat-1.webp',
     description:
       'Lifts heavy, drooping brows and opens the eye area to restore a refreshed, alert expression without any surgical intervention.',
     detail:
@@ -17,7 +17,7 @@ const AREAS = [
   {
     area: 'Mid-Face',
     duration: '45 min',
-    image: '/treat-22.png',
+    image: '/treat-22.webp',
     description:
       'Restores lost cheekbone projection and lifts descended malar fat pads to reconstruct the heart-shaped facial contour of youth.',
     detail:
@@ -27,7 +27,7 @@ const AREAS = [
   {
     area: 'Jawline',
     duration: '45 min',
-    image: '/treat-3.png',
+    image: '/treat-3.webp',
     description:
       'Redefines a softened jawline and reduces jowling — restoring the sharp, sculpted silhouette that time has gradually eroded.',
     detail:
@@ -37,7 +37,7 @@ const AREAS = [
   {
     area: 'Neck',
     duration: '60 min',
-    image: '/treat-4.png',
+    image: '/treat-4.webp',
     description:
       'Tightens loose neck skin, smooths platysmal banding and restores the elegant, uninterrupted line from chin to shoulder.',
     detail:
@@ -47,7 +47,7 @@ const AREAS = [
   {
     area: 'Nasolabial Folds',
     duration: '30 min',
-    image: '/treat-51.png',
+    image: '/treat-51.webp',
     description:
       'Softens deep smile lines by addressing their root cause — repositioning the descended tissue that creates the fold, not masking it with filler.',
     detail:
@@ -57,7 +57,7 @@ const AREAS = [
   {
     area: 'Décolletage',
     duration: '45 min',
-    image: '/treat-6.png',
+    image: '/treat-6.webp',
     description:
       'Visibly improves crepey skin texture, fine lines and laxity on the chest — an area often overlooked yet among the first to reveal age.',
     detail:
@@ -83,8 +83,6 @@ function AreaCard({ area, description, detail, duration, image, tag, isActive, o
           ? '1px solid rgba(192,160,98,0.65)'
           : '1px solid rgba(192,160,98,0.15)',
         opacity: isVisible ? 1 : 0,
-        /* On mobile: use min-height so content never clips.
-           On desktop: use aspect-ratio for the uniform grid look. */
         ...(isMobile
           ? { minHeight: isActive ? 'auto' : '260px', height: isActive ? 'auto' : '260px' }
           : { aspectRatio: '3/4' }),
@@ -119,18 +117,17 @@ function AreaCard({ area, description, detail, duration, image, tag, isActive, o
         )}
       </div>
 
-    
-      {/* Vignette — only bottom third, fades out when active */}
-<div
-  style={{
-    position: 'absolute',
-    inset: 0,
-    pointerEvents: 'none',
-    background: 'linear-gradient(to top, rgba(8,12,20,0.82) 0%, rgba(8,12,20,0.45) 25%, rgba(8,12,20,0.0) 55%)',
-    opacity: isActive ? 0 : 1,
-    transition: 'opacity 0.4s',
-  }}
-/>
+      {/* Vignette — bottom gradient when collapsed */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          pointerEvents: 'none',
+          background: 'linear-gradient(to top, rgba(8,12,20,0.82) 0%, rgba(8,12,20,0.45) 25%, rgba(8,12,20,0.0) 55%)',
+          opacity: isActive ? 0 : 1,
+          transition: 'opacity 0.4s',
+        }}
+      />
 
       {/* ── Dark overlay when active ── */}
       <div
@@ -182,7 +179,7 @@ function AreaCard({ area, description, detail, duration, image, tag, isActive, o
             letterSpacing: '-0.01em',
             lineHeight: 1.2,
             color: '#fff',
-            margin: '0 0 4px',
+            margin: '0 0 6px',
           }}
         >
           {area}
@@ -193,18 +190,44 @@ function AreaCard({ area, description, detail, duration, image, tag, isActive, o
             textTransform: 'uppercase',
             letterSpacing: '0.18em',
             color: 'rgba(192,160,98,0.65)',
-            margin: 0,
+            margin: '0 0 10px',
           }}
         >
           {tag}
         </p>
+
+        {/* ── Tap prompt ── */}
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '5px',
+            padding: '5px 12px',
+            borderRadius: '2px',
+            border: '1px solid rgba(192,160,98,0.45)',
+            background: 'rgba(192,160,98,0.12)',
+            backdropFilter: 'blur(4px)',
+          }}
+        >
+          <span
+            style={{
+              fontSize: '9px',
+              fontWeight: 500,
+              textTransform: 'uppercase',
+              letterSpacing: '0.18em',
+              color: 'rgba(192,160,98,0.9)',
+              fontFamily: 'DM Sans, Inter, sans-serif',
+            }}
+          >
+            Tap to explore
+          </span>
+          <ChevronRight size={10} style={{ color: 'rgba(192,160,98,0.9)', flexShrink: 0 }} />
+        </div>
       </div>
 
       {/* ── DETAIL PANEL (expanded) ── */}
       <div
         style={{
-          /* On mobile: normal flow so the card height grows with content.
-             On desktop: absolute so it overlays the image. */
           position: isMobile ? 'relative' : 'absolute',
           inset: isMobile ? 'unset' : 0,
           display: isActive ? 'flex' : 'none',
@@ -363,7 +386,6 @@ export function TreatmentAreas() {
     typeof window !== 'undefined' ? window.innerWidth < 640 : false
   )
 
-  // Track viewport width to switch mobile/desktop layout
   if (typeof window !== 'undefined') {
     window.addEventListener('resize', () => {
       setIsMobile(window.innerWidth < 640)
@@ -452,11 +474,7 @@ export function TreatmentAreas() {
           </p>
         </div>
 
-        {/* ── Card Grid ──
-            Mobile  (<640px): 1 column — cards use min-height, grow when expanded
-            Tablet  (640px+): 2 columns — cards use aspect-ratio
-            Desktop (1024px+): 3 columns
-        ── */}
+        {/* ── Card Grid ── */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5">
           {AREAS.map((a, i) => (
             <AreaCard

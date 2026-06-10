@@ -41,7 +41,7 @@ function LogoMark() {
   return (
     <a href="/" className="inline-flex items-center mb-6" aria-label="Aptos home">
       <img
-        src="/logo10.png"
+        src="/logo10.webp"
         alt="Dr Matla Clinic"
         className="h-22 w-auto object-contain"
       />

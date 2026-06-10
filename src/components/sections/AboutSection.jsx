@@ -70,7 +70,7 @@ export function AboutSection() {
             >
               <div className="relative overflow-hidden rounded-[calc(2rem-1px)] bg-[var(--color-slate-deep,#1E293B)] aspect-[4/5]">
                 <img
-                  src="/drmatla3.png"
+                  src="/drmatla3.webp"
                   alt="Dr Matla holding Aptos Threads 25th Anniversary package at Dr Matla Clinic"
                   className="h-full w-full object-cover object-center object-top transition-transform duration-700 hover:scale-[1.02]"
                   loading="lazy"

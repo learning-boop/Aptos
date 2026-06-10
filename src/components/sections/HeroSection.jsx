@@ -16,13 +16,13 @@ const STATS = [
 const INDICATORS = [
   { id: 'brow',    label: 'Brow Lift', style: { top: '18%', right: '-1rem' }, lineWidth: 48 },
   { id: 'midface', label: 'Mid-Face',  style: { top: '42%', right: '-1rem' }, lineWidth: 56 },
-  { id: 'jawline', label: 'Jawline',   style: { top: '66%', right: '-1rem' }, lineWidth: 44 },
+  { id: 'jawline', label: 'Jawline',   style: { top: '58%', right: '-1.5rem' }, lineWidth: 52 },
 ]
 
 function TreatmentIndicator({ label, style, lineWidth, delay }) {
   return (
     <div
-      className="absolute z-20 flex items-center"
+      className="absolute z-20 hidden lg:flex items-center"
       style={{ ...style, animation: `hero-fade-up 0.6s ease ${delay} both` }}
       aria-hidden="true"
     >
@@ -44,10 +44,9 @@ function TreatmentIndicator({ label, style, lineWidth, delay }) {
 function VideoPanel({ videoRef, muted, onToggleSound }) {
   return (
     <div
-      className="relative w-full"
+      className="relative w-full mx-auto max-w-sm sm:max-w-md lg:max-w-none"
       style={{ animation: 'hero-fade-in 1.1s ease 0.3s both' }}
     >
-      {/* Ambient glow */}
       <div
         className="pointer-events-none absolute inset-0 -z-10 scale-[1.2] rounded-[2.5rem] opacity-50"
         style={{
@@ -64,19 +63,10 @@ function VideoPanel({ videoRef, muted, onToggleSound }) {
         }}
       >
         <div className="relative overflow-hidden rounded-[calc(2rem-1px)] bg-[var(--color-slate-deep,#1E293B)] aspect-[4/5]">
-
-          {/*
-            CRITICAL for iOS Safari autoplay:
-            - muted, autoPlay, playsInline must ALL be present as JSX props
-            - The ref is used in useEffect to call .play() imperatively
-              as a fallback after any user gesture on the page
-            - x-webkit-airplay="deny" stops AirPlay from interrupting muted autoplay
-            - data-webkit-playsinline is the legacy iOS 8/9 attribute
-          */}
           <video
             ref={videoRef}
-            className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-[1.02]"
-            src="/hero-video2.mp4"
+            className="h-full w-full object-cover object-top transition-transform duration-700 hover:scale-[1.02]"
+            src="/hero-video3.mp4"
             poster="/images/hero-model.jpg"
             autoPlay
             muted
@@ -84,14 +74,11 @@ function VideoPanel({ videoRef, muted, onToggleSound }) {
             playsInline
             preload="auto"
             aria-label="Aptos Thread Lift treatment showcase"
-            // Legacy iOS attributes (must be lowercase in HTML but JSX handles them)
             x-webkit-airplay="deny"
             data-webkit-playsinline="true"
           />
-
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[var(--color-navy)]/55 via-transparent to-transparent" />
           <div className="pointer-events-none absolute inset-0 rounded-[calc(2rem-1px)] ring-1 ring-inset ring-white/8" />
-
           <button
             type="button"
             onClick={onToggleSound}
@@ -113,25 +100,25 @@ function VideoPanel({ videoRef, muted, onToggleSound }) {
 function Stats() {
   return (
     <div
-      className="flex items-center gap-0"
+      className="grid grid-cols-3 gap-0"
       style={{ animation: 'hero-fade-up 0.7s ease 1.0s both' }}
     >
       {STATS.map(({ value, label }, i) => (
         <div
           key={label}
           className={cn(
-            'flex flex-col px-8 first:pl-0',
+            'flex flex-col py-3 px-4 first:pl-0',
             i > 0 && 'border-l border-white/15',
           )}
         >
           <span
-            className="text-2xl font-light leading-none text-white md:text-[1.75rem]"
+            className="text-xl sm:text-2xl md:text-[1.75rem] font-light leading-none text-white"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
             {value}
           </span>
           <span
-            className="mt-1.5 text-[11px] uppercase tracking-[0.2em] text-white/50"
+            className="mt-1.5 text-[9px] sm:text-[11px] uppercase tracking-[0.18em] text-white/50 leading-tight"
             style={{ fontFamily: 'Inter, sans-serif' }}
           >
             {label}
@@ -150,22 +137,17 @@ export function HeroSection() {
     const video = videoRef.current
     if (!video) return
 
-    // Attempt 1: play immediately on mount (works on Android + desktop)
     const attemptPlay = () => {
-      video.muted = true          // ensure muted flag is set on the element
+      video.muted = true
       video.play().catch(() => {})
     }
-
     attemptPlay()
 
-    // Attempt 2: retry on first user interaction anywhere on the page.
-    // iOS Safari sometimes requires a gesture before even muted autoplay works.
     const handleFirstInteraction = () => {
       if (video.paused) {
         video.muted = true
         video.play().catch(() => {})
       }
-      // Clean up — we only need this once
       document.removeEventListener('touchstart', handleFirstInteraction)
       document.removeEventListener('pointerdown', handleFirstInteraction)
       document.removeEventListener('scroll', handleFirstInteraction)
@@ -175,8 +157,6 @@ export function HeroSection() {
     document.addEventListener('pointerdown', handleFirstInteraction, { passive: true, once: true })
     document.addEventListener('scroll',      handleFirstInteraction, { passive: true, once: true })
 
-    // Attempt 3: Intersection Observer — play when video enters the viewport.
-    // Handles the case where the browser pauses offscreen videos.
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && video.paused) {
@@ -225,7 +205,6 @@ export function HeroSection() {
         className="relative flex min-h-svh items-center overflow-hidden bg-[var(--color-navy)]"
         aria-label="Aptos Thread Lift — Hero"
       >
-        {/* Background atmosphere */}
         <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
           <div
             className="absolute right-0 top-0 h-[70%] w-[55%] opacity-[0.065]"
@@ -237,7 +216,7 @@ export function HeroSection() {
           />
         </div>
 
-        <div className="relative z-10 mx-auto grid w-full max-w-[90rem] grid-cols-1 items-center gap-16 px-6 pt-32 pb-24 md:px-16 md:pt-28 lg:grid-cols-2 xl:gap-28">
+        <div className="relative z-10 mx-auto grid w-full max-w-[90rem] grid-cols-1 items-center gap-10 px-6 pt-32 pb-24 md:px-16 md:pt-28 lg:grid-cols-2 xl:gap-28">
 
           {/* LEFT: copy */}
           <div className="flex flex-col justify-center">
@@ -283,11 +262,8 @@ export function HeroSection() {
                 className="group inline-flex items-center gap-3 border border-[var(--color-gold)] bg-[var(--color-gold)] px-9 py-[15px] text-[12px] font-medium uppercase tracking-[0.18em] text-[var(--color-navy)] transition-all duration-300 hover:bg-transparent hover:text-[var(--color-gold)] shadow-[0_4px_20px_rgba(192,160,98,0.3)]"
                 style={{ fontFamily: 'Inter, sans-serif', borderRadius: '2px' }}
               >
-              Reserve Consultation
-                <ArrowRight
-                  size={13}
-                  className="transition-transform duration-300 group-hover:translate-x-1"
-                />
+                Reserve Consultation
+                <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-1" />
               </a>
 
               <button
@@ -310,7 +286,6 @@ export function HeroSection() {
           />
         </div>
 
-        {/* Bottom gold hairline */}
         <div
           className="absolute inset-x-0 bottom-0 z-10 h-px opacity-20"
           style={{ background: 'linear-gradient(90deg, transparent, var(--color-gold), transparent)' }}
