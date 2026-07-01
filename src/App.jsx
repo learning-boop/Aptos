@@ -1,33 +1,27 @@
-import { Navbar }           from '@/components/layout/Navbar'
-import { HeroSection }      from '@/components/sections/HeroSection'
-import { Benefits }         from '@/components/sections/Benefits'
-import { AboutSection }     from '@/components/sections/AboutSection'
-import { TreatmentAreas }   from '@/components/sections/TreatmentAreas'
-import { BeforeAfter }      from '@/components/sections/BeforeAfter'
-import { HowItWorks }       from '@/components/sections/HowItWorks'
-import { WhyAptos }         from '@/components/sections/WhyAptos'
-import { Testimonials }     from '@/components/sections/Testimonials'
-import { FAQ }              from '@/components/sections/FAQ'
-import { ConsultationCTA }  from '@/components/sections/ConsultationCTA'
-import { ContactForm }      from '@/components/sections/ContactForm'
-import { Footer }           from '@/Footer'
+import { Routes, Route } from 'react-router-dom'
+import { Layout } from '@/components/Layout'
+import { Home } from '@/pages/Home'
+import { TreatmentPage } from '@/pages/TreatmentPage'
+import { CostPage } from '@/pages/CostPage'
+import { BeforeAfterPage } from '@/pages/BeforeAfterPage'
+import { AboutPage } from '@/pages/AboutPage'
+import { FaqPage } from '@/pages/FaqPage'
+import { TREATMENTS } from '@/content/treatments'
 
 export default function App() {
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[var(--color-background)]">
-      <Navbar />
-      <HeroSection />
-      <Benefits />
-      <AboutSection />
-      <TreatmentAreas />
-      {/* <BeforeAfter /> */}
-      <HowItWorks />
-      <WhyAptos />
-      <Testimonials />
-      <FAQ />
-      {/* <ConsultationCTA /> */}
-      <ContactForm />
-      <Footer />
-    </main>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route index element={<Home />} />
+        {TREATMENTS.map(t => (
+          <Route key={t.slug} path={t.slug} element={<TreatmentPage slug={t.slug} />} />
+        ))}
+        <Route path="cost" element={<CostPage />} />
+        <Route path="before-and-after" element={<BeforeAfterPage />} />
+        <Route path="about" element={<AboutPage />} />
+        <Route path="faq" element={<FaqPage />} />
+        <Route path="*" element={<Home />} />
+      </Route>
+    </Routes>
   )
 }

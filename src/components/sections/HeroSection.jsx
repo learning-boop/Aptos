@@ -2,10 +2,12 @@ import { useRef, useState, useEffect } from 'react'
 import { ArrowRight, VolumeX, Volume2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-const fontLink = document.createElement('link')
-fontLink.rel   = 'stylesheet'
-fontLink.href  = 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap'
-if (!document.querySelector('[href*="Playfair+Display"]')) document.head.appendChild(fontLink)
+if (typeof document !== 'undefined' && !document.querySelector('[href*="Playfair+Display"]')) {
+  const fontLink = document.createElement('link')
+  fontLink.rel  = 'stylesheet'
+  fontLink.href = 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap'
+  document.head.appendChild(fontLink)
+}
 
 const STATS = [
   { value: '5,000+',  label: 'Treatments Performed' },

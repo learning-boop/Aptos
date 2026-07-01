@@ -1,21 +1,12 @@
+import { Link } from 'react-router-dom'
 import { Phone, Mail, MapPin, Instagram, Facebook, Youtube } from 'lucide-react'
-
-const TREATMENTS = [
-  'Aptos Thread Lift',
-  'Aptos Excellence',
-  'Aptos Spring',
-  'Aptos Needle',
-  'Facial Contouring',
-  'Neck & Jawline Lift',
-]
+import { TREATMENTS as TREATMENT_PAGES } from '@/content/treatments'
 
 const COMPANY = [
-  { label: 'About Dr Matla', href: '#about'        },
-  // { label: 'Before & After',  href: '#results'      },
-  { label: 'How It Works',    href: '#how-it-works' },
-  { label: 'FAQ',             href: '#faq'           },
-  { label: 'Testimonials',    href: '#reviews'       },
-  { label: 'Book Online',     href: 'https://portal.aestheticnursesoftware.com/book-online/1150' },
+  { label: 'About Dr Matla', to: '/about'            },
+  { label: 'Before & After', to: '/before-and-after' },
+  { label: 'Cost & Pricing', to: '/cost'             },
+  { label: 'Book Online',    href: 'https://portal.aestheticnursesoftware.com/book-online/1150' },
 ]
 
 const HOURS = [
@@ -39,13 +30,13 @@ const LEGAL = [
 
 function LogoMark() {
   return (
-    <a href="/" className="inline-flex items-center mb-6" aria-label="Aptos home">
+    <Link to="/" className="inline-flex items-center mb-6" aria-label="Dr Matla — home">
       <img
         src="/logo10.webp"
-        alt="Dr Matla Clinic"
+        alt="Dr Matla Clinic — Aptos Thread Lift Newcastle"
         className="h-22 w-auto object-contain"
       />
-    </a>
+    </Link>
   )
 }
 
@@ -98,15 +89,15 @@ export function Footer() {
               Treatments
             </p>
             <ul className="flex flex-col gap-3">
-              {TREATMENTS.map(t => (
-                <li key={t}>
-                  <a
-                    href="#treatments"
+              {TREATMENT_PAGES.map(t => (
+                <li key={t.slug}>
+                  <Link
+                    to={`/${t.slug}`}
                     className="text-[13px] text-white/60 font-light hover:text-white transition-colors"
                     style={{ fontFamily: 'Inter, sans-serif' }}
                   >
-                    {t}
-                  </a>
+                    {t.navLabel}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -118,16 +109,27 @@ export function Footer() {
               Clinic
             </p>
             <ul className="flex flex-col gap-3">
-              {COMPANY.map(({ label, href }) => (
+              {COMPANY.map(({ label, href, to }) => (
                 <li key={label}>
-                  <a
-                    href={href}
-                    {...(href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                    className="text-[13px] text-white/60 font-light hover:text-white transition-colors"
-                    style={{ fontFamily: 'Inter, sans-serif' }}
-                  >
-                    {label}
-                  </a>
+                  {to ? (
+                    <Link
+                      to={to}
+                      className="text-[13px] text-white/60 font-light hover:text-white transition-colors"
+                      style={{ fontFamily: 'Inter, sans-serif' }}
+                    >
+                      {label}
+                    </Link>
+                  ) : (
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[13px] text-white/60 font-light hover:text-white transition-colors"
+                      style={{ fontFamily: 'Inter, sans-serif' }}
+                    >
+                      {label}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -182,9 +184,31 @@ export function Footer() {
           className="flex flex-col sm:flex-row items-center justify-between gap-4 py-6"
           style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
         >
-          <p className="text-[11px] text-white/30 font-light text-center sm:text-left" style={{ fontFamily: 'Inter, sans-serif' }}>
-            © {new Date().getFullYear()} Dr Matla Clinic. All rights reserved.
-          </p>
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+  <p
+    className="text-[11px] text-white/30 font-light text-center sm:text-left"
+    style={{ fontFamily: 'Inter, sans-serif' }}
+  >
+    © {new Date().getFullYear()} Dr Matla Clinic. All rights reserved.
+  </p>
+
+  <span className="hidden sm:block text-white/15">•</span>
+
+  <p
+    className="text-[11px] text-white/30 font-light text-center"
+    style={{ fontFamily: 'Inter, sans-serif' }}
+  >
+    Design & Developed by{' '}
+    <a
+      href="https://creatorstouch.com"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-[var(--color-gold)] hover:text-[#E5C78A] transition-colors duration-300"
+    >
+      Creators Touch
+    </a>
+  </p>
+</div>
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
             {LEGAL.map(({ label, href }) => (
               <a
